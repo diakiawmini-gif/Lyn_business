@@ -1,0 +1,23 @@
+# Create a simple HTTP server to preview the website
+import http.server
+import socketserver
+import threading
+import os
+
+os.chdir('/mnt/kimi/output/zelyn-business')
+
+PORT = 8000
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory='/mnt/kimi/output/zelyn-business', **kwargs)
+
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print(f"Server running at http://localhost:{PORT}/")
+    # Run for a short time to verify
+    httpd.timeout = 2
+    try:
+        httpd.handle_request()
+    except:
+        pass
+    print("Server check complete")
